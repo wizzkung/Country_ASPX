@@ -1,0 +1,85 @@
+﻿CREATE PROC pGetCity
+@name NVARCHAR(200)
+as 
+SELECT *
+FROM City c join Country co on c.id = co.city_id
+WHERE (@name is null or @name = c.Name)
+
+
+CREATE PROC pGetCountry
+@name NVARCHAR(200)
+AS
+SELECT *
+FROM Country co join City c on co.city_id = c.id
+WHERE (@name IS NULL OR @name = co.Name)
+
+
+
+CREATE PROC pAddCity
+@name NVARCHAR(200),
+@population INT
+AS
+INSERT INTO City
+(Name, Population)
+VALUES
+(@name, @population)
+
+
+
+CREATE PROC pAddCountry
+@name NVARCHAR(200),
+@size NVARCHAR(200),
+@city_id INT
+AS
+INSERT INTO Country
+(Name, Size, city_id)
+VALUES
+(@name, @size, @city_id)
+
+
+
+CREATE PROC pDeleteCity
+@name NVARCHAR(200)
+AS
+DELETE FROM City
+WHERE Name = @name
+
+
+CREATE PROC pDeleteCountry
+@name NVARCHAR(200)
+AS
+DELETE FROM Country
+WHERE Name = @name
+
+
+CREATE PROC pGetAll
+AS
+SELECT *
+FROM Country co join City c on co.city_id = c.id
+
+
+CREATE PROC pUpdateCity
+@id int,
+@name NVARCHAR(200) = NULL,
+@Population INT = NULL
+AS
+UPDATE City
+SET
+Name = isnull(@name, Name),
+Population = isnull(@Population, Population)
+WHERE id = @id	
+
+
+
+CREATE PROC pUpdateCountry
+@id INT,
+@name NVARCHAR(200) = NULL,
+@size NVARCHAR(200) = NULL,
+@city_id INT = NULL
+AS
+UPDATE Country
+SET
+  Name = ISNULL(@name, Name),         
+        Size = ISNULL(@size, Size),
+        city_id = ISNULL(@city_id, city_id) 
+WHERE id = @id	
